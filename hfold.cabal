@@ -8,7 +8,7 @@ synopsis:            This is a synopsis
 license:             MIT
 license-file:        LICENSE
 author:              Gordon Fontenot
-maintainer:          gmoney@gitpushgitpaid.com
+maintainer:          gordon@fonten.io
 -- copyright:           
 -- category:            
 build-type:          Simple
