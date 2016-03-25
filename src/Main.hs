@@ -40,7 +40,7 @@ contentsOrSTDIN "-" = getContents
 contentsOrSTDIN p = readFile p
 
 wrapLine :: Int -> String -> [String]
-wrapLine _ [] = [""]
+wrapLine _ "" = [""]
 wrapLine w s = foldl (splitWordsAt w) [] $ words s
 
 splitWordsAt :: Int -> [String] -> String -> [String]
