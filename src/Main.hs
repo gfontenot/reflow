@@ -1,4 +1,5 @@
 import Options.Applicative
+import Data.Char (isSpace)
 
 data Config = Config
   { width :: Int
@@ -32,7 +33,7 @@ main = execParser opts >>= run
 run :: Config -> IO ()
 run (Config w p) = do
     c <- contentsOrSTDIN p
-    putStrLn $ unlines $ wrapLine w =<< lines c
+    putStrLn $ rstrip . unlines $ wrapLine w =<< lines c
 
 contentsOrSTDIN :: String -> IO String
 contentsOrSTDIN "-" = getContents
@@ -50,3 +51,6 @@ splitWordsAt w xs x
 
 appendToLast :: [String] -> String -> String
 appendToLast xs x = unwords [last xs, x]
+
+rstrip :: String -> String
+rstrip = reverse . dropWhile isSpace . reverse
