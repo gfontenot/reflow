@@ -17,7 +17,8 @@ config = Config
 
     <*> argument str
         ( metavar "PATH"
-        <> help "Path to input file"
+        <> help "Path to input file. If not provided, hfold will attempt to read from STDIN"
+        <> value "-"
         )
 
 main :: IO ()
@@ -30,8 +31,12 @@ main = execParser opts >>= run
 
 run :: Config -> IO ()
 run (Config w p) = do
-    f <- readFile p
-    putStrLn $ unlines $ wrapLine w =<< lines f
+    c <- contentsOrSTDIN p
+    putStrLn $ unlines $ wrapLine w =<< lines c
+
+contentsOrSTDIN :: String -> IO String
+contentsOrSTDIN "-" = getContents
+contentsOrSTDIN p = readFile p
 
 wrapLine :: Int -> String -> [String]
 wrapLine w s = foldl (splitWordsAt w) [] $ words s
