@@ -1,5 +1,10 @@
+{-# LANGUAGE OverloadedStrings #-}
+
 import Options.Applicative
 import Data.Char (isSpace)
+import Data.Text (Text)
+import qualified Data.Text as T
+import qualified Data.Text.IO as T
 
 data Config = Config
   { width :: Int
@@ -33,24 +38,21 @@ main = execParser opts >>= run
 run :: Config -> IO ()
 run (Config w p) = do
     c <- contentsOrSTDIN p
-    putStrLn $ rstrip . unlines $ wrapLine w =<< lines c
+    T.putStrLn $ T.stripEnd . T.unlines $ wrapLine w =<< T.lines c
 
-contentsOrSTDIN :: String -> IO String
-contentsOrSTDIN "-" = getContents
-contentsOrSTDIN p = readFile p
+contentsOrSTDIN :: FilePath -> IO Text
+contentsOrSTDIN "-" = T.getContents
+contentsOrSTDIN p = T.readFile p
 
-wrapLine :: Int -> String -> [String]
+wrapLine :: Int -> Text -> [Text]
 wrapLine _ "" = [""]
-wrapLine w s = foldl (splitWordsAt w) [] $ words s
+wrapLine w s = foldl (splitWordsAt w) [] $ T.words s
 
-splitWordsAt :: Int -> [String] -> String -> [String]
+splitWordsAt :: Int -> [Text] -> Text -> [Text]
 splitWordsAt _ [] x = [x]
 splitWordsAt w xs x
-  | length (appendToLast xs x) > w = xs ++ [x]
+  | T.length (appendToLast xs x) > w = xs ++ [x]
   | otherwise = init xs ++ [appendToLast xs x]
 
-appendToLast :: [String] -> String -> String
-appendToLast xs x = unwords [last xs, x]
-
-rstrip :: String -> String
-rstrip = reverse . dropWhile isSpace . reverse
+appendToLast :: [Text] -> Text -> Text
+appendToLast xs x = T.unwords [last xs, x]
