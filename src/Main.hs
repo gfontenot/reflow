@@ -38,7 +38,7 @@ main = execParser opts >>= run
 run :: Config -> IO ()
 run (Config w p) = do
     c <- contentsOrSTDIN p
-    T.putStrLn $ T.stripEnd . T.unlines $ wrapLine w =<< T.lines c
+    T.putStrLn $ T.stripEnd $ T.unlines $ wrapLine w =<< T.lines c
 
 contentsOrSTDIN :: FilePath -> IO Text
 contentsOrSTDIN "-" = T.getContents
