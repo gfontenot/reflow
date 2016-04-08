@@ -1,39 +1,15 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-import Options.Applicative
+import Options.Applicative (execParser)
 import Data.Char (isSpace)
 import Data.Text (Text)
 import qualified Data.Text as T
 import qualified Data.Text.IO as T
 
-data Config = Config
-  { width :: Int
-  , path :: FilePath
-  }
-
-config :: Parser Config
-config = Config
-    <$> option auto
-        ( long "width"
-        <> short 'w'
-        <> metavar "WIDTH"
-        <> value 80
-        <> help "Specify a line width to use instead of the default 80 columns"
-        )
-
-    <*> argument str
-        ( metavar "PATH"
-        <> help "Path to input file. If not provided, hfold will attempt to read from STDIN"
-        <> value "-"
-        )
+import Hfold.CLI
 
 main :: IO ()
 main = execParser opts >>= run
-  where
-    opts = info (helper <*> config)
-      ( fullDesc
-      <> progDesc "Intelligently wrap lines to a given length"
-      )
 
 run :: Config -> IO ()
 run (Config w p) = do
