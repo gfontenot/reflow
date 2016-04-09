@@ -13,10 +13,7 @@ parseFile t = case parse parseContent "content" (T.unpack t) of
     Right xs -> xs
 
 parseContent :: Parser [Content]
-parseContent = do
-    c <- many (quoted <|> codeBlock <|> normal)
-    eof
-    return c
+parseContent = many (quoted <|> codeBlock <|> normal) <* eof
 
 normal :: Parser Content
 normal = Normal <$> singleLine
