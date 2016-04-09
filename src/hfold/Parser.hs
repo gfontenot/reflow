@@ -8,9 +8,7 @@ import Text.ParserCombinators.Parsec
 import Hfold.Types
 
 parseFile :: Text -> [Content]
-parseFile t = case parse parseContent "content" (T.unpack t) of
-    Left err -> []
-    Right xs -> xs
+parseFile t = either (const []) id $ parse parseContent "content" (T.unpack t)
 
 parseContent :: Parser [Content]
 parseContent = many (quoted <|> codeBlock <|> normal) <* eof
