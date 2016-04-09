@@ -12,10 +12,12 @@ executable hfold
   hs-source-dirs:    src
   main-is:           Main.hs
   build-depends:     base >=4.8 && <4.9
-                  ,  optparse-applicative
-                  ,  text
+                   , optparse-applicative
+                   , text
+                   , parsec
 
   other-modules:     Hfold.CLI
+                   , Hfold.Parser
                    , Hfold.Types
 
   default-language:  Haskell2010

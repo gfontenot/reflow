@@ -1,25 +1,31 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 import Options.Applicative (execParser)
-import Data.Char (isSpace)
 import Data.Text (Text)
 import qualified Data.Text as T
 import qualified Data.Text.IO as T
 
 import Hfold.Types
 import Hfold.CLI
+import Hfold.Parser
 
 main :: IO ()
 main = execParser opts >>= run
 
 run :: Config -> IO ()
-run (Config w p) = do
-    c <- contentsOrSTDIN p
-    T.putStrLn $ T.stripEnd $ T.unlines $ wrapLine w =<< T.lines c
+run (Config w p) = T.putStrLn . wrap w . parseFile =<< contentsOrSTDIN p
 
 contentsOrSTDIN :: FilePath -> IO Text
 contentsOrSTDIN "-" = T.getContents
 contentsOrSTDIN p = T.readFile p
+
+wrap :: Int -> [Content] -> Text
+wrap w = T.stripEnd . T.unlines . concatMap (wrapContent w)
+
+wrapContent :: Int -> Content -> [Text]
+wrapContent _ (CodeBlock t) = [t]
+wrapContent _ (Quoted t) = [t]
+wrapContent w (Normal t) = wrapLine w t
 
 wrapLine :: Int -> Text -> [Text]
 wrapLine _ "" = [""]
