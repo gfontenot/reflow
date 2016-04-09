@@ -15,4 +15,6 @@ executable hfold
                   ,  optparse-applicative
                   ,  text
 
+  other-modules:     Hfold.CLI
+
   default-language:  Haskell2010
