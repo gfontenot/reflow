@@ -2,10 +2,7 @@ module Hfold.CLI where
 
 import Options.Applicative
 
-data Config = Config
-  { width :: Int
-  , path :: FilePath
-  }
+import Hfold.Types
 
 opts :: ParserInfo Config
 opts = info (helper <*> config)
