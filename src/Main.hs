@@ -1,5 +1,3 @@
-{-# LANGUAGE OverloadedStrings #-}
-
 import Options.Applicative (execParser)
 import Data.Text (Text)
 import qualified Data.Text as T
