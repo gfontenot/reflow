@@ -4,6 +4,7 @@ import Data.Text (Text)
 
 data Config = Config
   { width :: Int
+  , ignoreHeaders :: Bool
   , path :: FilePath
   }
 

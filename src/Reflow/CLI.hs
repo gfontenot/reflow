@@ -20,6 +20,11 @@ config = Config
         <> help "Specify a line width to use instead of the default 80 columns"
         )
 
+    <*> switch
+        ( long "ignore-headers"
+        <> help "Don't wrap email headers"
+        )
+
     <*> argument str
         ( metavar "PATH"
         <> help "Path to input file. If not provided, reflow will attempt to read from STDIN"
