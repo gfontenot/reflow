@@ -23,19 +23,21 @@ normal = Normal <$> singleLine
 
 header :: Parser Content
 header = do
-    name <- many1 $ noneOf ":\n"
-    start <- many1 $ noneOf "\n"
-    void newline
-    rest <- many headerContinued
-    let value = T.pack start <> "\n" <> T.unlines rest
-    return $ Header $ T.pack name <> value
+    n <- headerName
+    s <- singleLine
+    r <- many headerContinued
+    let v = s <> T.unlines r
+    return $ Header $ n <> v
+
+headerName :: Parser Text
+headerName = T.pack <$> (many1 $ noneOf ":\n")
 
 headerContinued :: Parser Text
 headerContinued = do
-    void $ char '\t'
-    text <- many1 $ noneOf "\n"
-    void newline
-    return $ "\t" <> T.pack text <> "\n"
+    void tab
+    text <- singleLine
+    void eol
+    return $ "\t" <> text <> "\n"
 
 quoted :: Parser Content
 quoted = do
