@@ -3,6 +3,7 @@ module Reflow.Parser where
 import Control.Monad (void)
 import Data.Monoid ((<>))
 import Data.Text (Text, pack)
+import qualified Data.Text as T
 import Text.Parsec
 import Text.Parsec.Text (Parser)
 
@@ -30,7 +31,7 @@ header = do
     return $ Header $ n <> v
 
 headerName :: Parser Text
-headerName = T.pack <$> (many1 $ noneOf ":\n")
+headerName = pack <$> (many1 $ noneOf ":\n")
 
 headerContinued :: Parser Text
 headerContinued = do
