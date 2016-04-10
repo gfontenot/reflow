@@ -23,6 +23,7 @@ wrap w = T.stripEnd . T.unlines . concatMap (wrapContent w)
 wrapContent :: Int -> Content -> [Text]
 wrapContent _ (CodeBlock t) = [t]
 wrapContent _ (Quoted t) = [t]
+wrapContent _ (Header t) = [t]
 wrapContent w (Normal t) = wrapLine w t
 
 wrapLine :: Int -> Text -> [Text]

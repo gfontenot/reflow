@@ -7,4 +7,5 @@ data Config = Config
   , path :: FilePath
   }
 
-data Content = Normal Text | Quoted Text | CodeBlock Text deriving (Show)
+data Content = Normal Text | Header Text | Quoted Text | CodeBlock Text
+    deriving (Show)

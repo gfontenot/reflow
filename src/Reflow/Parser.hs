@@ -1,5 +1,6 @@
 module Reflow.Parser where
 
+import Control.Monad (void)
 import Data.Monoid ((<>))
 import Data.Text (Text, pack)
 import Text.Parsec
@@ -11,10 +12,30 @@ parseFile :: Text -> [Content]
 parseFile t = either (const []) id $ parse parseContent "content" t
 
 parseContent :: Parser [Content]
-parseContent = many (quoted <|> codeBlock <|> normal) <* eof
+parseContent = do
+    h <- option [] (many header)
+    c <- many (quoted <|> codeBlock <|> normal)
+    void eof
+    return (h <> c)
 
 normal :: Parser Content
 normal = Normal <$> singleLine
+
+header :: Parser Content
+header = do
+    name <- many1 $ noneOf ":\n"
+    start <- many1 $ noneOf "\n"
+    void newline
+    rest <- many headerContinued
+    let value = T.pack start <> "\n" <> T.unlines rest
+    return $ Header $ T.pack name <> value
+
+headerContinued :: Parser Text
+headerContinued = do
+    void $ char '\t'
+    text <- many1 $ noneOf "\n"
+    void newline
+    return $ "\t" <> T.pack text <> "\n"
 
 quoted :: Parser Content
 quoted = do
@@ -27,7 +48,7 @@ codeBlock = do
     s <- codeBlockChar
     c <- codeBlockContents
     e <- codeBlockChar
-    eol
+    void eol
     return $ CodeBlock $ s <> c <> e
 
 singleLine :: Parser Text
