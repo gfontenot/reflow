@@ -5,9 +5,9 @@ import Data.Text (Text)
 import qualified Data.Text as T
 import qualified Data.Text.IO as T
 
-import Hfold.Types
-import Hfold.CLI
-import Hfold.Parser
+import Reflow.Types
+import Reflow.CLI
+import Reflow.Parser
 
 main :: IO ()
 main = execParser opts >>= run

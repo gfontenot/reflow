@@ -1,11 +1,11 @@
-module Hfold.Parser where
+module Reflow.Parser where
 
 import Data.Monoid ((<>))
 import Data.Text (Text)
 import qualified Data.Text as T
 import Text.ParserCombinators.Parsec
 
-import Hfold.Types
+import Reflow.Types
 
 parseFile :: Text -> [Content]
 parseFile t = either (const []) id $ parse parseContent "content" (T.unpack t)

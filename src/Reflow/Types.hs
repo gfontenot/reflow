@@ -1,4 +1,4 @@
-module Hfold.Types where
+module Reflow.Types where
 
 import Data.Text (Text)
 

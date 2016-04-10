@@ -1,8 +1,8 @@
-module Hfold.CLI where
+module Reflow.CLI where
 
 import Options.Applicative
 
-import Hfold.Types
+import Reflow.Types
 
 opts :: ParserInfo Config
 opts = info (helper <*> config)
@@ -22,6 +22,6 @@ config = Config
 
     <*> argument str
         ( metavar "PATH"
-        <> help "Path to input file. If not provided, hfold will attempt to read from STDIN"
+        <> help "Path to input file. If not provided, reflow will attempt to read from STDIN"
         <> value "-"
         )
