@@ -1,14 +1,14 @@
 module Reflow.Parser where
 
 import Data.Monoid ((<>))
-import Data.Text (Text)
-import qualified Data.Text as T
-import Text.ParserCombinators.Parsec
+import Data.Text (Text, pack)
+import Text.Parsec
+import Text.Parsec.Text (Parser)
 
 import Reflow.Types
 
 parseFile :: Text -> [Content]
-parseFile t = either (const []) id $ parse parseContent "content" (T.unpack t)
+parseFile t = either (const []) id $ parse parseContent "content" t
 
 parseContent :: Parser [Content]
 parseContent = many (quoted <|> codeBlock <|> normal) <* eof
@@ -31,16 +31,16 @@ codeBlock = do
     return $ CodeBlock $ s <> c <> e
 
 singleLine :: Parser Text
-singleLine = T.pack <$> manyTill anyChar (try eol)
+singleLine = pack <$> manyTill anyChar (try eol)
 
 quoteChar :: Parser Text
-quoteChar = T.pack <$> (string ">")
+quoteChar = pack <$> (string ">")
 
 codeBlockChar :: Parser Text
-codeBlockChar = T.pack <$> (string "```")
+codeBlockChar = pack <$> (string "```")
 
 codeBlockContents :: Parser Text
-codeBlockContents = T.pack <$> manyTill anyChar (lookAhead codeBlockChar)
+codeBlockContents = pack <$> manyTill anyChar (lookAhead codeBlockChar)
 
 eol :: Parser String
 eol = try (string "\n\r")
