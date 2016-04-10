@@ -7,7 +7,7 @@ import Reflow.Types
 opts :: ParserInfo Config
 opts = info (helper <*> config)
   ( fullDesc
-  <> progDesc "Intelligently wrap lines to a given length"
+  <> progDesc "Intelligently reflow text to a given length"
   )
 
 config :: Parser Config
