@@ -17,7 +17,7 @@ parseContent = do
     h <- option [] (many header)
     c <- many (quoted <|> codeBlock <|> normal)
     void eof
-    return (h <> c)
+    return $ h <> c
 
 normal :: Parser Content
 normal = Normal <$> singleLine
