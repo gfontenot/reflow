@@ -31,7 +31,10 @@ header = do
     return $ Header $ n <> v
 
 headerName :: Parser Text
-headerName = pack <$> (many1 $ noneOf ":\n")
+headerName = do
+    n <- manyTill (noneOf "\n") (lookAhead $ string ":")
+    s <- string ":"
+    return $ pack $ n <> s
 
 headerContinued :: Parser Text
 headerContinued = do
