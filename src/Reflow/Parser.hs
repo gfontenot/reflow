@@ -14,7 +14,7 @@ parseFile t = either (const []) id $ parse parseContent "content" t
 
 parseContent :: Parser [Content]
 parseContent = do
-    h <- option [] (many header)
+    h <- option [] (try $ many header)
     c <- many (quoted <|> codeBlock <|> normal)
     void eof
     return $ h <> c
