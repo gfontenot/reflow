@@ -11,7 +11,7 @@ main :: IO ()
 main = execParser opts >>= run
 
 run :: Config -> IO ()
-run c@(Config _ _ p) = T.putStrLn . wrap c . parseFile =<< contentsOrSTDIN p
+run c = T.putStrLn . wrap c . parseFile =<< contentsOrSTDIN (path c)
 
 contentsOrSTDIN :: FilePath -> IO Text
 contentsOrSTDIN "-" = T.getContents
@@ -21,12 +21,12 @@ wrap :: Config -> [Content] -> Text
 wrap c = T.stripEnd . T.unlines . concatMap (wrapContent c)
 
 wrapContent :: Config -> Content -> [Text]
-wrapContent _              (CodeBlock t) = [t]
-wrapContent _              (Quoted t) = [t]
-wrapContent (Config w _ _) (Normal t) = wrapLine w t
-wrapContent (Config w i _) (Header t)
-    | i = [t]
-    | otherwise = wrapLine w t
+wrapContent _ (CodeBlock t) = [t]
+wrapContent _ (Quoted t) = [t]
+wrapContent c (Normal t) = wrapLine (width c) t
+wrapContent c (Header t)
+    | ignoreHeaders c = [t]
+    | otherwise = wrapLine (width c) t
 
 wrapLine :: Int -> Text -> [Text]
 wrapLine _ "" = [""]
