@@ -1,6 +1,6 @@
 name:                    reflow
 version:                 1.0.0
-synopsis:                This is a synopsis
+synopsis:                Intelligently reflow text with a given line length
 license:                 MIT
 license-file:            LICENSE
 author:                  Gordon Fontenot
