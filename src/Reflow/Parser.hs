@@ -46,10 +46,7 @@ headerContinued = do
     return $ "\t" <> text <> "\n"
 
 quoted :: Parser Content
-quoted = do
-    q <- quoteChar
-    l <- singleLine
-    return $ Quoted (q <> l)
+quoted = Quoted <$> (quotePrefix *> singleLine)
 
 codeBlock :: Parser Content
 codeBlock = do
@@ -62,8 +59,10 @@ codeBlock = do
 singleLine :: Parser Text
 singleLine = pack <$> manyTill anyChar (try eol)
 
-quoteChar :: Parser Text
-quoteChar = pack <$> (string ">")
+quotePrefix :: Parser Text
+quotePrefix = fmap pack $ mappend
+    <$> (string ">")
+    <*> (many $ char ' ')
 
 codeBlockChar :: Parser Text
 codeBlockChar = pack <$> (string "```")
