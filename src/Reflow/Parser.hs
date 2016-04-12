@@ -31,10 +31,12 @@ header = do
     return $ Header $ n <> v
 
 headerName :: Parser Text
-headerName = do
-    n <- manyTill (noneOf "\n") (lookAhead $ string ":")
-    s <- string ":"
-    return $ pack $ n <> s
+headerName = fmap pack $ mappend
+    <$> many1 allowedHeaderChars
+    <*> string ":"
+
+allowedHeaderChars :: Parser Char
+allowedHeaderChars = alphaNum <|> char '-'
 
 headerContinued :: Parser Text
 headerContinued = do
