@@ -22,7 +22,7 @@ wrap c = T.stripEnd . T.unlines . concatMap (wrapContent c)
 
 wrapContent :: Config -> Content -> [Text]
 wrapContent _ (CodeBlock t) = [t]
-wrapContent _ (Quoted t) = [t]
+wrapContent c (Quoted t) = map (mappend "> ") $ wrapLine (width c - 2) t
 wrapContent c (Normal t) = wrapLine (width c) t
 wrapContent c (Header t)
     | ignoreHeaders c = [t]
