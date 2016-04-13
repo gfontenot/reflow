@@ -61,7 +61,7 @@ singleLine = pack <$> manyTill anyChar (try eol)
 
 quotePrefix :: Parser Text
 quotePrefix = fmap pack $ mappend
-    <$> (string ">")
+    <$> string ">"
     <*> (many $ char ' ')
 
 codeBlockChar :: Parser Text
