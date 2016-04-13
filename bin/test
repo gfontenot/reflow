@@ -4,6 +4,6 @@ set -e
 
 stack build
 
-stack exec reflow -- -w 78 --ignore-headers fixtures/input.txt > /tmp/output.txt
+stack exec reflow -- -w 78 --ignore-headers < fixtures/input.txt > /tmp/output.txt
 
 diff /tmp/output.txt fixtures/expected.txt
