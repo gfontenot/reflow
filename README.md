@@ -23,3 +23,26 @@ Available options:
   PATH                     Path to input file. If not provided, reflow will
                            attempt to read from STDIN
 ```
+
+## Development
+
+Use [stack] for development. On OS X this can be installed via Homebrew:
+
+```
+$ brew install haskell-stack
+```
+
+Then run `bin/setup` to install the dependencies. Once you've got that set up,
+you can test the build via `stack build`.
+
+You can also install development versions via `stack install`.
+
+## Tests
+
+```
+$ bin/test
+```
+
+This will run the `reflow` command against `fixtures/input.txt` and
+check the diff against `fixtures/expected.txt`. If they are different, the
+diff will be printed and the command will fail.
