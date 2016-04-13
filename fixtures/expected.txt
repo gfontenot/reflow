@@ -1,4 +1,6 @@
 Header: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+To: foo@example.com, bar@example.com, baz@example.com, quz@example.com, foobar@example.com, foobaz@example.com,
+	foobuzz@example.com, fooquz@example.com, bonk@example.com, bink@example.com, bank@example.com, bossman@example.com
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
 incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis

@@ -3,7 +3,6 @@ module Reflow.Parser where
 import Control.Monad (void)
 import Data.Monoid ((<>))
 import Data.Text (Text, pack)
-import qualified Data.Text as T
 import Text.Parsec
 import Text.Parsec.Text (Parser)
 
@@ -27,7 +26,7 @@ header = do
     n <- headerName
     s <- singleLine
     r <- many headerContinued
-    let v = s <> T.unlines r
+    let v = s <> foldl mappend "" r
     return $ Header $ n <> v
 
 headerName :: Parser Text
@@ -42,8 +41,7 @@ headerContinued :: Parser Text
 headerContinued = do
     void tab
     text <- singleLine
-    void eol
-    return $ "\t" <> text <> "\n"
+    return $ "\n\t" <> text
 
 quoted :: Parser Content
 quoted = Quoted <$> (quotePrefix *> singleLine)
