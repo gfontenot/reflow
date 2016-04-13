@@ -26,7 +26,7 @@ header = do
     n <- headerName
     s <- singleLine
     r <- many headerContinued
-    let v = s <> foldl mappend "" r
+    let v = s <> mconcat r
     return $ Header $ n <> v
 
 headerName :: Parser Text
