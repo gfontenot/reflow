@@ -16,3 +16,5 @@ func Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tem
     nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
 }
 ```
+
+`foo` `bar` `baz`
