@@ -6,8 +6,8 @@ Intelligently reflow text to a given length.
 
  - Break lines on word boundaries by default (mimicking `fold -s`)
  - Doesn't reflow markdown code blocks
- - Doesn't reflow markdown/email quote blocks
- - Optionally doesn't reflow email headers
+ - Intelligently reflow markdown/email quote blocks, maintaining quote levels
+ - Optionally ignores email headers
 
 ## Usage
 
