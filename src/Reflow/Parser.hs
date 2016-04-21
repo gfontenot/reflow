@@ -16,11 +16,8 @@ parserError input e = Normal
     <> (pack $ show e)
 
 parseFile :: Text -> [Content]
-parseFile t = do
-    let result = parse parseContent "content" t
-    case result of
-        Left e -> return $ parserError t e
-        Right success -> success
+parseFile t = either (return . parserError t) id
+    $ parse parseContent "content" t
 
 parseContent :: Parser [Content]
 parseContent = do
