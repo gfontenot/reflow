@@ -8,8 +8,19 @@ import Text.Parsec.Text (Parser)
 
 import Reflow.Types
 
+parserError :: Text -> ParseError -> Content
+parserError input e = Normal
+    $ input
+    <> "\n\n\n"
+    <> "Warning: reflow parser failed\n"
+    <> (pack $ show e)
+
 parseFile :: Text -> [Content]
-parseFile t = either (const []) id $ parse parseContent "content" t
+parseFile t = do
+    let result = parse parseContent "content" t
+    case result of
+        Left e -> return $ parserError t e
+        Right success -> success
 
 parseContent :: Parser [Content]
 parseContent = do
