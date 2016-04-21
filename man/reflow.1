@@ -1,0 +1,64 @@
+.Dd April 21, 2016
+.Dt REFLOW 1
+.Os
+.Sh NAME
+.Nm reflow
+.Nd Intelligently reflow text
+.
+.Sh SYNOPSIS
+.Nm
+.Op Fl w | Fl -width
+.Op Fl -ignore-headers
+.Op Ar PATH
+.
+.Sh DESCRIPTION
+.Nm
+is like
+.Xr fold 1
+on steroids.
+.Pp
+It supports the following options:
+.Bl -tag -width "--ignore-headers"
+.It Fl h , Fl -help
+display a help message and exit
+.It Fl w , Fl -width
+Specify a line width to use instead of the default 80 columns
+.It Fl -ignore-headers
+Don't wrap email headers
+.El
+.Pp
+.Nm
+will read the text from the provided file path, or attempt to read from
+.Ic STDIN
+if no path is provided.
+.Pp
+.Nm
+is able to perform some more intelligent wrapping behavior than
+.Xr fold 1 .
+For example:
+.Pp
+.Bl -dash -compact -width 2
+.It
+Break on word boundaries by default, which mimics the output of
+.Ic fold -s
+.It
+.Ic Markdown
+style code blocks will be left unaltered. This is preferable since code
+wrapping and indentation is often semantic.
+.It
+.Ic Markdown
+style quote blocks will be re-wrapped, maintaining the existing quote level.
+That means that nested quote blocks will re-wrap to the provided length but
+will continue to be represented as nested quotes.
+.It
+Optionally ignore email headers. If enabled with the
+.Fl -ignore-headers
+flag,
+.Nm
+will leave lines at the top of the input that conform to the spec for email
+headers unaltered. As with code blocks, indentation and wrapping for these
+lines tends to be semantic, so shouldn't be re-wrapped.
+.El
+.Pp
+.Sh AUTHORS
+.An "Gordon Fontenot" Aq gordon@fonten.io
