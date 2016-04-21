@@ -44,7 +44,7 @@ headerContinued = do
     return $ "\n\t" <> text
 
 quoted :: Parser Content
-quoted = Quoted <$> (quotePrefix *> singleLine)
+quoted = Quoted <$> (quotePrefix *> (quoted <|> normal))
 
 codeBlock :: Parser Content
 codeBlock = do
