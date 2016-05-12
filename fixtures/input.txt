@@ -20,3 +20,12 @@ func Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tem
 ```
 
 `foo` `bar` `baz`
+
+[-- Begin signature information --]
+Good signature from: Gordon Fontenot (personal) <gordon@fonten.io>
+                aka: keybase.io/gfontenot <gfontenot@keybase.io>
+                aka: Gordon Fontenot (thoughtbot) <gordon@thoughtbot.com>
+                aka: Gordon Fontenot (personal) <gordon.fontenot@me.com>
+                aka: Gordon Fontenot (git) <gmoney@gitpushgitpaid.com>
+            created: Thu May 12 14:26:06 2016
+[-- End signature information --]

@@ -22,7 +22,7 @@ parseFile t = either (return . parserError t) id
 parseContent :: Parser [Content]
 parseContent = do
     h <- option [] (try $ many header)
-    c <- many (quoted <|> try codeBlock <|> normal)
+    c <- many (quoted <|> try codeBlock <|> try pgpBlock <|> normal)
     void eof
     return $ h <> c
 
@@ -62,6 +62,13 @@ codeBlock = do
     void eol
     return $ CodeBlock $ s <> c <> e
 
+pgpBlock :: Parser Content
+pgpBlock = do
+    s <- pgpBlockStart
+    c <- pgpBlockContents
+    e <- pgpBlockEnd
+    return $ PGPBlock $ s <> c <> e
+
 singleLine :: Parser Text
 singleLine = pack <$> manyTill anyChar (try eol)
 
@@ -75,6 +82,15 @@ codeBlockChar = pack <$> (string "```")
 
 codeBlockContents :: Parser Text
 codeBlockContents = pack <$> manyTill anyChar (lookAhead codeBlockChar)
+
+pgpBlockStart :: Parser Text
+pgpBlockStart = pack <$> string "[-- Begin signature information --]"
+
+pgpBlockEnd :: Parser Text
+pgpBlockEnd = pack <$> string "[-- End signature information --]"
+
+pgpBlockContents :: Parser Text
+pgpBlockContents = pack <$> manyTill anyChar (lookAhead pgpBlockEnd)
 
 eol :: Parser String
 eol = try (string "\n\r")
