@@ -63,11 +63,10 @@ codeBlock = do
     return $ CodeBlock $ s <> c <> e
 
 pgpBlock :: Parser Content
-pgpBlock = do
-    s <- pgpBlockStart
-    c <- pgpBlockContents
-    e <- pgpBlockEnd
-    return $ PGPBlock $ s <> c <> e
+pgpBlock = fmap PGPBlock $ mappend3 <$> pgpBlockStart <*> pgpBlockContents <*> pgpBlockEnd
+
+mappend3 :: (Monoid m) => m -> m -> m -> m
+mappend3 a b c = a <> b <> c
 
 singleLine :: Parser Text
 singleLine = pack <$> manyTill anyChar (try eol)
