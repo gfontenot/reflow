@@ -2,7 +2,7 @@ module Reflow.Parser where
 
 import Control.Monad (void)
 import Data.Monoid ((<>))
-import Data.Text (Text, pack)
+import Data.Text (Text, pack, singleton)
 import Text.Parsec
 import Text.Parsec.Text (Parser)
 
@@ -67,11 +67,11 @@ blockContents start contents end = do
     s <- start
     c <- contents
     e <- end
-    void eol
+    void (trailingWhitespace >> eol)
     return $ s <> c <> e
 
 singleLine :: Parser Text
-singleLine = pack <$> manyTill anyChar (try eol)
+singleLine = pack <$> manyTill anyChar (try trailingWhitespace >> eol)
 
 quotePrefix :: Parser Text
 quotePrefix = fmap pack $ mappend
@@ -93,9 +93,8 @@ pgpBlockEnd = pack <$> string "[-- End signature information --]"
 pgpBlockContents :: Parser Text
 pgpBlockContents = pack <$> manyTill anyChar (lookAhead pgpBlockEnd)
 
-eol :: Parser String
-eol = try (string "\n\r")
-    <|> try (string "\r\n")
-    <|> string "\n"
-    <|> string "\r"
-    <?> "end of line"
+trailingWhitespace :: Parser Text
+trailingWhitespace = pack <$> manyTill (char ' ') (lookAhead eol)
+
+eol :: Parser Text
+eol = singleton <$> endOfLine
