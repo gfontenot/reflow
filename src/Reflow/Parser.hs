@@ -55,18 +55,20 @@ quoted :: Parser Content
 quoted = Quoted <$> (quotePrefix *> (quoted <|> normal))
 
 codeBlock :: Parser Content
-codeBlock = do
-    s <- codeBlockChar
-    c <- codeBlockContents
-    e <- codeBlockChar
-    void eol
-    return $ CodeBlock $ s <> c <> e
+codeBlock = fmap CodeBlock
+    $ blockContents codeBlockChar codeBlockContents codeBlockChar
 
 pgpBlock :: Parser Content
-pgpBlock = fmap PGPBlock $ mappend3 <$> pgpBlockStart <*> pgpBlockContents <*> pgpBlockEnd
+pgpBlock = fmap PGPBlock
+    $ blockContents pgpBlockStart pgpBlockContents pgpBlockEnd
 
-mappend3 :: (Monoid m) => m -> m -> m -> m
-mappend3 a b c = a <> b <> c
+blockContents :: Parser Text -> Parser Text -> Parser Text -> Parser Text
+blockContents start contents end = do
+    s <- start
+    c <- contents
+    e <- end
+    void eol
+    return $ s <> c <> e
 
 singleLine :: Parser Text
 singleLine = pack <$> manyTill anyChar (try eol)
