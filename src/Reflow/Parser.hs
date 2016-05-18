@@ -67,11 +67,11 @@ blockContents start contents end = do
     s <- start
     c <- contents
     e <- end
-    void (trailingWhitespace >> eol)
+    void $ trailingWhitespace >> eol
     return $ s <> c <> e
 
 singleLine :: Parser Text
-singleLine = pack <$> manyTill anyChar (try trailingWhitespace >> eol)
+singleLine = pack <$> manyTill anyChar (try $ trailingWhitespace >> eol)
 
 quotePrefix :: Parser Text
 quotePrefix = fmap pack $ mappend
