@@ -24,8 +24,8 @@ wrapContent :: Config -> Content -> [Text]
 wrapContent _ (Blank) = [""]
 wrapContent _ (CodeBlock t) = [t]
 wrapContent _ (PGPBlock t) = [t]
-wrapContent c (Quoted t) = map (mappend "> ") $ wrapContent (lessWidth 2 c) t
-wrapContent c (Normal i t) = map (mappend $ T.pack (replicate i ' ')) $ wrapLine (width c - i) t
+wrapContent c (Quoted t) = mapPrepend "> " $ wrapContent (lessWidth 2 c) t
+wrapContent c (Normal i t) = mapPrepend (emptyText i) $ wrapLine (width c - i) t
 wrapContent c (Header t)
     | ignoreHeaders c = [t]
     | otherwise = wrapLine (width c) t
@@ -42,3 +42,9 @@ splitWordsAt w xs x
 
 appendToLast :: [Text] -> Text -> Text
 appendToLast xs x = T.unwords [last xs, x]
+
+mapPrepend :: Text -> [Text] -> [Text]
+mapPrepend t ts = map (mappend t) ts
+
+emptyText :: Int -> Text
+emptyText i = T.pack $ replicate i ' '
