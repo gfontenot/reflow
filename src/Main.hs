@@ -24,7 +24,7 @@ wrapContent :: Config -> Content -> [Text]
 wrapContent _ (CodeBlock t) = [t]
 wrapContent _ (PGPBlock t) = [t]
 wrapContent c (Quoted t) = map (mappend "> ") $ wrapContent (lessWidth 2 c) t
-wrapContent c (Normal t) = wrapLine (width c) t
+wrapContent c (Normal i t) = map (mappend $ T.pack (replicate i ' ')) $ wrapLine (width c - i) t
 wrapContent c (Header t)
     | ignoreHeaders c = [t]
     | otherwise = wrapLine (width c) t

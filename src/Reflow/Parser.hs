@@ -9,7 +9,7 @@ import Text.Parsec.Text (Parser)
 import Reflow.Types
 
 parserError :: Text -> ParseError -> Content
-parserError input e = Normal
+parserError input e = Normal 0
     $ input
     <> "\n\n\n"
     <> "Warning: reflow parser failed\n"
@@ -27,7 +27,10 @@ parseContent = do
     return $ h <> c
 
 normal :: Parser Content
-normal = Normal <$> singleLine
+normal = do
+    ws <- many (char ' ')
+    l <- singleLine
+    return $ Normal (length ws) l
 
 header :: Parser Content
 header = do
