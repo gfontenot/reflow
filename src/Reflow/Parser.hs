@@ -22,7 +22,7 @@ parseFile t = either (return . parserError t) id
 parseContent :: Parser [Content]
 parseContent = do
     h <- option [] (try $ many header)
-    c <- many (quoted <|> try codeBlock <|> try pgpBlock <|> normal)
+    c <- many (blank <|> quoted <|> try codeBlock <|> try pgpBlock <|> normal)
     void eof
     return $ h <> c
 
@@ -31,6 +31,11 @@ normal = do
     ws <- many (char ' ')
     l <- singleLine
     return $ Normal (length ws) l
+
+blank :: Parser Content
+blank = do
+    _ <- try $ trailingWhitespace >> eol
+    return Blank
 
 header :: Parser Content
 header = do
