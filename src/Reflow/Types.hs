@@ -11,5 +11,5 @@ data Config = Config
 lessWidth :: Int -> Config -> Config
 lessWidth i c = c { width = width c - i }
 
-data Content = Normal Int Text | Blank | Header Text | Quoted Content | CodeBlock Text | PGPBlock Text
+data Content = Blank | Normal Int Text | Header Text | Quoted Content | CodeBlock Text | PGPBlock Text
     deriving (Show)

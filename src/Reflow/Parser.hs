@@ -34,7 +34,7 @@ normal = do
 
 blank :: Parser Content
 blank = do
-    _ <- try $ trailingWhitespace >> eol
+    void $ try $ trailingWhitespace >> eol
     return Blank
 
 header :: Parser Content

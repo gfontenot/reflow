@@ -44,7 +44,7 @@ appendToLast :: [Text] -> Text -> Text
 appendToLast xs x = T.unwords [last xs, x]
 
 mapPrepend :: Text -> [Text] -> [Text]
-mapPrepend t ts = map (mappend t) ts
+mapPrepend t = map (mappend t)
 
 emptyText :: Int -> Text
 emptyText i = T.pack $ replicate i ' '
